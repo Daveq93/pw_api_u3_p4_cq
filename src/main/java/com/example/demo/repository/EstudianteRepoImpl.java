@@ -26,4 +26,15 @@ public class EstudianteRepoImpl implements IEstudianteRepo {
 		return es;
 	}
 
+	@Override
+	public void insertarEstudiante(Estudiante estudiante) {
+		this.em.persist(estudiante);
+	}
+
+	@Override
+	public void actualizarEstudiante() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
