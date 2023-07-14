@@ -30,43 +30,7 @@ public class Materia {
 	private Integer creditos;
 
 	
-	//Get and set
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public Integer getCreditos() {
-		return creditos;
-	}
-
-	public void setCreditos(Integer creditos) {
-		this.creditos = creditos;
-	}
-
-	@Override
-	public String toString() {
-		return "Materia [id=" + id + ", codigo=" + codigo + ", nombre=" + nombre + ", creditos=" + creditos + "]";
-	}
+	//Get and set generado por lombok
 	
 	
 	

@@ -1,5 +1,7 @@
 package com.example.demo.repository;
 
+import java.util.List;
+
 import com.example.demo.model.Estudiante;
 
 public interface IEstudianteRepo {
@@ -8,6 +10,13 @@ public interface IEstudianteRepo {
 	
 	public Estudiante seleccionarPorCedula(String cedula);
 	
-	public void actualizarEstudiante();
+	public Estudiante actualizarEstudiante(Estudiante estudiante);
 	
+	
+	public Integer actualizarParcial(String cedulaActual, String cedulaNueva);
+
+
+	public void borrar(Integer id);
+	
+	public List<Estudiante> listarEstudiantes();
 }
