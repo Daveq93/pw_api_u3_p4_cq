@@ -28,24 +28,24 @@ public class EstudianteControllerRestFull {
 	private IEstudianteService estudianteService;
 
 	// Get
-	@GetMapping(path = "/buscar/{cedula}")
+	@GetMapping(path = "/{cedula}")
 	public ResponseEntity<Estudiante> consultarPorCedula(@PathVariable(name="cedula") String cedula) {
 
 		return ResponseEntity.ok(this.estudianteService.consultarPorCedula(cedula));
 	}
 
-	@PostMapping(path = "/guardar") // Requestbody => digo que Estudiante debe venir en el cuerpo del request
+	@PostMapping // Requestbody => digo que Estudiante debe venir en el cuerpo del request
 	public void guardar(@RequestBody Estudiante estudiante) {
 		this.estudianteService.guardar(estudiante);
 	}
 
-	@PutMapping(path = "/actualizar/{id}")
+	@PutMapping(path = "/{id}")
 	public ResponseEntity<Estudiante> actualizar(@RequestBody Estudiante estudiante, @PathVariable(name="id")Integer identificador ) {
 		estudiante.setId(identificador);
 		return ResponseEntity.ok(this.estudianteService.actualizar(estudiante));
 	}
 
-	@PatchMapping(path = "/actualizarParcial/{cedula}")
+	@PatchMapping(path = "/{cedula}")
 	public ResponseEntity<Integer> actualizarParcial(@RequestBody Estudiante estudiante, @PathVariable(name="cedula")String cedula) {
 		
 //		estudiante.setId(identificador);
@@ -55,14 +55,14 @@ public class EstudianteControllerRestFull {
 	
 		return ResponseEntity.ok(this.estudianteService.actualizarParcial(estudiante.getCedula(),this.estudianteService.consultarPorCedula(cedula).getCedula() ));
 	}
+	
 
-	@DeleteMapping(path = "/borrar/{id}")
+	@DeleteMapping(path = "/{id}")
 	public void borrar(@PathVariable Integer id) {
-		
 		this.estudianteService.eliminar(id);
 	}
 	
-	@GetMapping(path = "/listar")//PathVariable hace referencia a un identificador, RequestParam es mas general
+	@GetMapping//PathVariable hace referencia a un identificador, RequestParam es mas general
 	public ResponseEntity<List<Estudiante>> listar(){
 		
 		return ResponseEntity.ok(this.estudianteService.listarTodos());
