@@ -1,10 +1,10 @@
 package com.example.demo.controller;
 
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Estudiante;
@@ -28,10 +27,16 @@ public class EstudianteControllerRestFull {
 	private IEstudianteService estudianteService;
 
 	// Get
+//	@GetMapping(path = "/{cedula}")
+//	//Response entity es un wrapper 
+//	public ResponseEntity<Estudiante> consultarPorCedula(@PathVariable(name="cedula") String cedula) {
+//		return ResponseEntity.status(227).body(this.estudianteService.consultarPorCedula(cedula));
+//	}
+	
 	@GetMapping(path = "/{cedula}")
-	public ResponseEntity<Estudiante> consultarPorCedula(@PathVariable(name="cedula") String cedula) {
-
-		return ResponseEntity.ok(this.estudianteService.consultarPorCedula(cedula));
+	//Response entity es un wrapper 
+	public ResponseEntity<Estudiante> consultarPorCedulaStatus(@PathVariable(name="cedula") String cedula) {
+		return ResponseEntity.status(HttpStatus.OK).body(this.estudianteService.consultarPorCedula(cedula));
 	}
 
 	@PostMapping // Requestbody => digo que Estudiante debe venir en el cuerpo del request
@@ -64,15 +69,19 @@ public class EstudianteControllerRestFull {
 	
 	@GetMapping//PathVariable hace referencia a un identificador, RequestParam es mas general
 	public ResponseEntity<List<Estudiante>> listar(){
-		
-		return ResponseEntity.ok(this.estudianteService.listarTodos());
+	
+		//return ResponseEntity.ok(this.estudianteService.listarTodos());
+	HttpHeaders cabecera = new HttpHeaders();
+	cabecera.add("detailMessage","Ciudadanos consultados exitosamente");
+		cabecera.add("valor Api", "Incalculable");
+		return new ResponseEntity<>(this.estudianteService.listarTodos(),cabecera,228);
 	}
 	
 	
-	@GetMapping(path = "/listarProv")//PathVariable hace referencia a un identificador, RequestParam es mas general
-	public ResponseEntity<List<Estudiante>> listar(@RequestParam String provincia){
-		
-		return ResponseEntity.ok(this.estudianteService.listarTodos().stream().filter(x->x.getProvincia().equals(provincia)).collect(Collectors.toList()));
-	}
+//	@GetMapping(path="/{provincia}")//PathVariable hace referencia a un identificador, RequestParam es mas general
+//	public ResponseEntity<List<Estudiante>> listar(@RequestParam String provincia){
+//		
+//		return ResponseEntity.ok(this.estudianteService.listarTodos().stream().filter(x->x.getProvincia().equals(provincia)).collect(Collectors.toList()));
+//	}
 
 }
