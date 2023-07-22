@@ -65,4 +65,11 @@ public class EstudianteRepoImpl implements IEstudianteRepo {
 		TypedQuery<Estudiante> myQ = this.em.createQuery("Select e from Estudiante e",Estudiante.class);
 		return myQ.getResultList();
 	}
+
+	@Override
+	public Estudiante insertarEstudianteMedia(Estudiante estudiante) {
+		// TODO Auto-generated method stub
+		this.em.persist(estudiante);
+		return estudiante;
+	}
 }

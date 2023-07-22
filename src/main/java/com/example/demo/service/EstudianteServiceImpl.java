@@ -51,4 +51,10 @@ public class EstudianteServiceImpl implements IEstudianteService {
 		return this.estudianteRepo.listarEstudiantes();
 	}
 
+	@Override
+	public Estudiante guardarEstudianteMetiType(Estudiante estudiante) {
+		// TODO Auto-generated method stub
+		return this.estudianteRepo.insertarEstudianteMedia(estudiante);
+	}
+
 }

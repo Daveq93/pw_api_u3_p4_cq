@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Estudiante;
@@ -39,7 +41,7 @@ public class EstudianteControllerRestFull {
 		return ResponseEntity.status(HttpStatus.OK).body(this.estudianteService.consultarPorCedula(cedula));
 	}
 
-	@PostMapping // Requestbody => digo que Estudiante debe venir en el cuerpo del request
+	@PostMapping(consumes = "application/xml") // Requestbody => digo que Estudiante debe venir en el cuerpo del request
 	public void guardar(@RequestBody Estudiante estudiante) {
 		this.estudianteService.guardar(estudiante);
 	}
@@ -83,5 +85,20 @@ public class EstudianteControllerRestFull {
 //		
 //		return ResponseEntity.ok(this.estudianteService.listarTodos().stream().filter(x->x.getProvincia().equals(provincia)).collect(Collectors.toList()));
 //	}
+	
+	//-------------------------
+	@GetMapping(path = "/status2/{cedula}",produces =MediaType.APPLICATION_XML_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+	public Estudiante consultarPorCedula(@PathVariable(name="cedula") String cedula) {
+		//return ResponseEntity.status(227).body(this.estudianteService.consultarPorCedula(cedula));
+		return this.estudianteService.consultarPorCedula(cedula);
+	}
 
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Estudiante guardarEstudianteMedia(@RequestBody Estudiante estudiante){
+				
+		return this.estudianteService.guardarEstudianteMetiType(estudiante);
+	}
+	
 }

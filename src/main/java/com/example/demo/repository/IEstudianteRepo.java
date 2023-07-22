@@ -18,5 +18,7 @@ public interface IEstudianteRepo {
 
 	public void borrar(Integer id);
 	
-	public List<Estudiante> listarEstudiantes();
+	List<Estudiante> listarEstudiantes();
+
+	public Estudiante insertarEstudianteMedia(Estudiante estudiante);
 }

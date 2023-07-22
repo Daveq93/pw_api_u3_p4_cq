@@ -17,4 +17,6 @@ public interface IEstudianteService {
    public void eliminar(Integer id);
    
    public List<Estudiante> listarTodos();
+   
+   public Estudiante guardarEstudianteMetiType(Estudiante estudiante);
 }
