@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,6 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Estudiante;
 import com.example.demo.service.IEstudianteService;
+import com.example.demo.service.to.EstudianteTO;
+import com.example.demo.service.to.MateriaTO;
+
+//importacion explicita
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/estudiantes") // el nombre debe ser en plural
@@ -69,16 +76,16 @@ public class EstudianteControllerRestFull {
 		this.estudianteService.eliminar(id);
 	}
 	
-	@GetMapping//PathVariable hace referencia a un identificador, RequestParam es mas general
-	public ResponseEntity<List<Estudiante>> listar(){
-	
-		//return ResponseEntity.ok(this.estudianteService.listarTodos());
-	HttpHeaders cabecera = new HttpHeaders();
-	cabecera.add("detailMessage","Ciudadanos consultados exitosamente");
-		cabecera.add("valor Api", "Incalculable");
-		return new ResponseEntity<>(this.estudianteService.listarTodos(),cabecera,228);
-	}
-	
+//	@GetMapping//PathVariable hace referencia a un identificador, RequestParam es mas general
+//	public ResponseEntity<List<Estudiante>> listar(){
+//	
+//		//return ResponseEntity.ok(this.estudianteService.listarTodos());
+//	HttpHeaders cabecera = new HttpHeaders();
+//	cabecera.add("detailMessage","Ciudadanos consultados exitosamente");
+//		cabecera.add("valor Api", "Incalculable");
+//		return new ResponseEntity<>(this.estudianteService.listarTodos(),cabecera,228);
+//	}
+//	
 	
 //	@GetMapping(path="/{provincia}")//PathVariable hace referencia a un identificador, RequestParam es mas general
 //	public ResponseEntity<List<Estudiante>> listar(@RequestParam String provincia){
@@ -101,4 +108,26 @@ public class EstudianteControllerRestFull {
 		return this.estudianteService.guardarEstudianteMetiType(estudiante);
 	}
 	
+	//----------------------
+	@GetMapping//PathVariable hace referencia a un identificador, RequestParam es mas general
+	public ResponseEntity<List<EstudianteTO>> listarTodosHATEOAS(){
+	
+		//return ResponseEntity.ok(this.estudianteService.listarTodos());
+	HttpHeaders cabecera = new HttpHeaders();
+	cabecera.add("detailMessage","Estudiantes HATEOAS");
+		
+	List<EstudianteTO> lista= this.estudianteService.buscarTodosHATEOAS();
+	
+	for (EstudianteTO e:lista) {
+		Link myLink = linkTo(methodOn(EstudianteControllerRestFull.class).buscarPorEstudiante(e.getCedula())).withRel("materias");
+		e.add(myLink);
+	}
+	
+		return new ResponseEntity<>(lista,cabecera,HttpStatus.OK);
+	}
+	
+	@GetMapping(path="/{cedula}/materias")
+	public ResponseEntity<List<MateriaTO>> buscarPorEstudiante(@PathVariable(name="cedula") String cedula){
+		return null;
+	}
 }

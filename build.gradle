@@ -32,6 +32,8 @@ dependencies {
 	
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml
 implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.15.2'
+	// https://mvnrepository.com/artifact/org.springframework.hateoas/spring-hateoas
+implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '2.1.2'
 	
 }
 

@@ -1,12 +1,14 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.Estudiante;
 import com.example.demo.repository.IEstudianteRepo;
+import com.example.demo.service.to.EstudianteTO;
 
 @Service
 public class EstudianteServiceImpl implements IEstudianteService {
@@ -55,6 +57,25 @@ public class EstudianteServiceImpl implements IEstudianteService {
 	public Estudiante guardarEstudianteMetiType(Estudiante estudiante) {
 		// TODO Auto-generated method stub
 		return this.estudianteRepo.insertarEstudianteMedia(estudiante);
+	}
+
+	@Override
+	public List<EstudianteTO> buscarTodosHATEOAS() {
+		// TODO Auto-generated method stub
+		List<Estudiante> lista = this.estudianteRepo.listarEstudiantes();
+		
+		List<EstudianteTO> listaTO = lista.parallelStream().map(e->{
+			EstudianteTO et = new EstudianteTO();
+			et.setApellido(e.getApellido());
+			et.setCedula(e.getCedula());
+			et.setFechaNacimiento(e.getFechaNacimiento());
+			et.setId(e.getId());
+			et.setNombre(e.getNombre());
+			et.setProvincia(e.getProvincia());
+			return et;
+		} ).collect(Collectors.toList());
+		
+		return listaTO;
 	}
 
 }
