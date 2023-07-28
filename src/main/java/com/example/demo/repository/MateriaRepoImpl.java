@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.model.Materia;
+import com.example.demo.service.to.MateriaTO;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -42,11 +43,12 @@ public class MateriaRepoImpl implements IMateriaRepo {
 		return materias;
 	}
 
+
 	@Override
-	public Materia buscarPorId(Integer id) {
+	public List<Materia> listarMaterias() {
 		// TODO Auto-generated method stub
-		
-		return this.em.find(Materia.class, id);
+		TypedQuery<Materia> myQ = this.em.createQuery("select m from Materia m",Materia.class);
+		return myQ.getResultList();
 	}
 
 	

@@ -39,6 +39,7 @@ public class MateriaServiceImpl implements IMateriaService {
 		List<MateriaTO> mateTO = materias.parallelStream().map(m -> {
 			MateriaTO mate = new MateriaTO();
 			mate.setId(m.getId());
+			mate.setCodigo(m.getCodigo());
 			mate.setNombre(m.getNombre());
 			mate.setNumeroCedula(m.getEstudiante().getCedula());
 			return mate;
@@ -48,15 +49,30 @@ public class MateriaServiceImpl implements IMateriaService {
 	}
 
 	@Override
-	public MateriaTO obtenerMateriaTO(Integer id) {
+	public List<MateriaTO> obtenerMateriaTO() {
 		// TODO Auto-generated method stub
-		Materia m = this.materiaRepo.buscarPorId(id);
-		MateriaTO mTO = new MateriaTO();
-		mTO.setId(m.getId());
-		mTO.setNombre(m.getNombre());
-		mTO.setNumeroCedula(m.getEstudiante().getCedula());
-		
+		List<Materia> materias = this.materiaRepo.listarMaterias();
+		List<MateriaTO> mTO= materias.stream().map(m->{
+			return convertirATO(m);
+		}).collect(Collectors.toList());
 		return mTO;
+	}
+	
+	private MateriaTO convertirATO(Materia materia) {
+		MateriaTO m = new MateriaTO();
+		m.setCodigo(materia.getCodigo());
+		m.setId(materia.getId());
+		m.setNombre(materia.getNombre());
+		m.setNumeroCedula(materia.getEstudiante().getCedula());
+		return m;
+	}
+
+	@Override
+	public MateriaTO consultarPorcodigoTO(String codigo) {
+		// TODO Auto-generated method stub
+		Materia m = this.materiaRepo.buscarPorCodigo(codigo);
+		
+		return this.convertirATO(m);
 	}
 
 }

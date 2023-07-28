@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Estudiante;
@@ -36,32 +37,16 @@ public class MateriaControllerRestFull {
 	@Autowired
 	private IMateriaService materiaService;
 
-	@PostMapping(path = "/guardar")
+	@PostMapping(consumes=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
 	public void guardar(@RequestBody Materia materia) {
 		this.materiaService.guardar(materia);
 	}
 
-//	@GetMapping(path = "/codigo/{codigo}")
-//	public ResponseEntity<Materia> consultarPorCodigo(@PathVariable(name = "codigo") String codigo) {
-//
-//		return ResponseEntity.status(200).body(this.materiaService.consultarPorCodigo(codigo));
-//	}
+	@GetMapping(path = "/{codigo}",produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<MateriaTO> consultarPorCodigo(@PathVariable(name = "codigo") String codigo) {
 
-	@GetMapping(path="/{id}",produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<MateriaTO> materiaPorId(@PathVariable(name="id") Integer id) {
+		return ResponseEntity.status(200).body(this.materiaService.consultarPorcodigoTO(codigo));
+	}
 
-		MateriaTO m = this.materiaService.obtenerMateriaTO(id);
-		//System.out.println(m.toString());
-		Link myLynk = linkTo(methodOn(MateriaControllerRestFull.class).buscarMateriaPorCodigo(m.getId())).withRel("materia");
-           m.add(myLynk);
-		return new ResponseEntity<>(m,null,HttpStatus.OK);
-	}
-	
-	
-	@GetMapping(path="/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<MateriaTO> buscarMateriaPorCodigo(@PathVariable(name="id") Integer id){
-		
-		
-		return new ResponseEntity<>(this.materiaService.obtenerMateriaTO(id),null,HttpStatus.OK);
-	}
 }

@@ -10,10 +10,12 @@ public interface IMateriaService {
 	public void guardar(Materia materia);
 	
 	public Materia consultarPorCodigo(String codigo);
+	
+	public MateriaTO consultarPorcodigoTO(String codigo);
 
 	public List<MateriaTO> materiasPorCedulaEstudiante(String cedulaEstudiante);
 	
-	public MateriaTO obtenerMateriaTO(Integer id);
+	public List<MateriaTO> obtenerMateriaTO();
 	
 	
 }

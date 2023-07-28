@@ -38,17 +38,17 @@ public class EstudianteControllerRestFull {
 
 	@Autowired
 	private IMateriaService materiaService;
-	
+
 	// Get
 //	@GetMapping(path = "/{cedula}")
 //	//Response entity es un wrapper 
 //	public ResponseEntity<Estudiante> consultarPorCedula(@PathVariable(name="cedula") String cedula) {
 //		return ResponseEntity.status(227).body(this.estudianteService.consultarPorCedula(cedula));
 //	}
-	
+
 	@GetMapping(path = "/{cedula}")
-	//Response entity es un wrapper 
-	public ResponseEntity<Estudiante> consultarPorCedulaStatus(@PathVariable(name="cedula") String cedula) {
+	// Response entity es un wrapper
+	public ResponseEntity<Estudiante> consultarPorCedulaStatus(@PathVariable(name = "cedula") String cedula) {
 		return ResponseEntity.status(HttpStatus.OK).body(this.estudianteService.consultarPorCedula(cedula));
 	}
 
@@ -58,28 +58,30 @@ public class EstudianteControllerRestFull {
 	}
 
 	@PutMapping(path = "/{id}")
-	public ResponseEntity<Estudiante> actualizar(@RequestBody Estudiante estudiante, @PathVariable(name="id")Integer identificador ) {
+	public ResponseEntity<Estudiante> actualizar(@RequestBody Estudiante estudiante,
+			@PathVariable(name = "id") Integer identificador) {
 		estudiante.setId(identificador);
 		return ResponseEntity.ok(this.estudianteService.actualizar(estudiante));
 	}
 
 	@PatchMapping(path = "/{cedula}")
-	public ResponseEntity<Integer> actualizarParcial(@RequestBody Estudiante estudiante, @PathVariable(name="cedula")String cedula) {
-		
+	public ResponseEntity<Integer> actualizarParcial(@RequestBody Estudiante estudiante,
+			@PathVariable(name = "cedula") String cedula) {
+
 //		estudiante.setId(identificador);
 //		String cedula = "1784512154";
 //		Estudiante estu1 = this.estudianteService.consultarPorCedula(cedula);
 //		estu1.setCedula(estudiante.getCedula());
-	
-		return ResponseEntity.ok(this.estudianteService.actualizarParcial(estudiante.getCedula(),this.estudianteService.consultarPorCedula(cedula).getCedula() ));
+
+		return ResponseEntity.ok(this.estudianteService.actualizarParcial(estudiante.getCedula(),
+				this.estudianteService.consultarPorCedula(cedula).getCedula()));
 	}
-	
 
 	@DeleteMapping(path = "/{id}")
 	public void borrar(@PathVariable Integer id) {
 		this.estudianteService.eliminar(id);
 	}
-	
+
 //	@GetMapping//PathVariable hace referencia a un identificador, RequestParam es mas general
 //	public ResponseEntity<List<Estudiante>> listar(){
 //	
@@ -90,50 +92,56 @@ public class EstudianteControllerRestFull {
 //		return new ResponseEntity<>(this.estudianteService.listarTodos(),cabecera,228);
 //	}
 //	
-	
+
 //	@GetMapping(path="/{provincia}")//PathVariable hace referencia a un identificador, RequestParam es mas general
 //	public ResponseEntity<List<Estudiante>> listar(@RequestParam String provincia){
 //		
 //		return ResponseEntity.ok(this.estudianteService.listarTodos().stream().filter(x->x.getProvincia().equals(provincia)).collect(Collectors.toList()));
 //	}
-	
-	//-------------------------
-	@GetMapping(path = "/status2/{cedula}",produces =MediaType.APPLICATION_XML_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-	public Estudiante consultarPorCedula(@PathVariable(name="cedula") String cedula) {
-		//return ResponseEntity.status(227).body(this.estudianteService.consultarPorCedula(cedula));
+
+	// -------------------------
+	@GetMapping(path = "/status2/{cedula}", produces = MediaType.APPLICATION_XML_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Estudiante consultarPorCedula(@PathVariable(name = "cedula") String cedula) {
+		// return
+		// ResponseEntity.status(227).body(this.estudianteService.consultarPorCedula(cedula));
 		return this.estudianteService.consultarPorCedula(cedula);
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public Estudiante guardarEstudianteMedia(@RequestBody Estudiante estudiante){
-				
+	public Estudiante guardarEstudianteMedia(@RequestBody Estudiante estudiante) {
+
 		return this.estudianteService.guardarEstudianteMetiType(estudiante);
 	}
-	
-	//----------------------
-	@GetMapping(produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<EstudianteTO>> listarTodosHATEOAS(){
-	
-		//return ResponseEntity.ok(this.estudianteService.listarTodos());
-	HttpHeaders cabecera = new HttpHeaders();
-	cabecera.add("detailMessage","Estudiantes HATEOAS");
-		
-	List<EstudianteTO> lista= this.estudianteService.buscarTodosHATEOAS();
-	
-	for (EstudianteTO e:lista) {
-		Link myLink = linkTo(methodOn(EstudianteControllerRestFull.class).buscarPorEstudiante(e.getCedula())).withRel("materias"); //withRel(nombre del link)
-		e.add(myLink);
+
+	// ----------------------
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<EstudianteTO>> listarTodosHATEOAS() {
+
+		// return ResponseEntity.ok(this.estudianteService.listarTodos());
+		HttpHeaders cabecera = new HttpHeaders();
+		cabecera.add("detailMessage", "Estudiantes HATEOAS");
+
+		List<EstudianteTO> lista = this.estudianteService.buscarTodosHATEOAS();
+
+		for (EstudianteTO e : lista) {
+			Link myLink = linkTo(methodOn(EstudianteControllerRestFull.class).buscarPorEstudiante(e.getCedula()))
+					.withRel("materias"); // withRel(nombre del link)
+			e.add(myLink);
+		}
+
+		return new ResponseEntity<>(lista, cabecera, HttpStatus.OK);
 	}
-	
-		return new ResponseEntity<>(lista,cabecera,HttpStatus.OK);
-	}
-	
-	@GetMapping(path="/{cedula}/materias",produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<MateriaTO>> buscarPorEstudiante(@PathVariable(name="cedula") String cedula){
-		
-		
-		return new ResponseEntity<>(this.materiaService.materiasPorCedulaEstudiante(cedula),null,HttpStatus.OK);
+
+	@GetMapping(path = "/{cedula}/materias", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<MateriaTO>> buscarPorEstudiante(@PathVariable(name = "cedula") String cedula) {
+		List<MateriaTO> lista = this.materiaService.materiasPorCedulaEstudiante(cedula);
+		for (MateriaTO mat : lista) {
+			Link myLink = linkTo(methodOn(MateriaControllerRestFull.class).consultarPorCodigo(mat.getCodigo()))
+					.withRel("materia");
+			mat.add(myLink);
+		}
+		return new ResponseEntity<>(lista, null, HttpStatus.OK);
 	}
 }
