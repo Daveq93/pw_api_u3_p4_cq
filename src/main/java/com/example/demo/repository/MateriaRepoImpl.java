@@ -1,5 +1,7 @@
 package com.example.demo.repository;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.model.Materia;
@@ -28,6 +30,23 @@ public class MateriaRepoImpl implements IMateriaRepo {
 		// TODO Auto-generated method stub
 		TypedQuery<Materia> myQ = this.em.createQuery("Select m from Materia m where m.codigo=:codigoM", Materia.class);
 		return myQ.setParameter("codigoM", codigo).getSingleResult();
+	}
+
+	@Override
+	public List<Materia> buscarPorCedulaEstudiante(String cedulaEstudiante) {
+		// TODO Auto-generated method stub
+		//select m from Materia m where m.estudiante.cedula=:cedula
+		TypedQuery<Materia> myQ = this.em.createQuery("select m from Materia m where m.estudiante.cedula=:cedula",Materia.class);
+		List<Materia> materias =myQ.setParameter("cedula", cedulaEstudiante).getResultList();
+		materias.size();
+		return materias;
+	}
+
+	@Override
+	public Materia buscarPorId(Integer id) {
+		// TODO Auto-generated method stub
+		
+		return this.em.find(Materia.class, id);
 	}
 
 	

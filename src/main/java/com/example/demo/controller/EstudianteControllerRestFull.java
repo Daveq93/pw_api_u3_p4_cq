@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Estudiante;
 import com.example.demo.service.IEstudianteService;
+import com.example.demo.service.IMateriaService;
 import com.example.demo.service.to.EstudianteTO;
 import com.example.demo.service.to.MateriaTO;
 
@@ -35,6 +36,9 @@ public class EstudianteControllerRestFull {
 	@Autowired
 	private IEstudianteService estudianteService;
 
+	@Autowired
+	private IMateriaService materiaService;
+	
 	// Get
 //	@GetMapping(path = "/{cedula}")
 //	//Response entity es un wrapper 
@@ -109,7 +113,7 @@ public class EstudianteControllerRestFull {
 	}
 	
 	//----------------------
-	@GetMapping//PathVariable hace referencia a un identificador, RequestParam es mas general
+	@GetMapping(produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<EstudianteTO>> listarTodosHATEOAS(){
 	
 		//return ResponseEntity.ok(this.estudianteService.listarTodos());
@@ -119,15 +123,17 @@ public class EstudianteControllerRestFull {
 	List<EstudianteTO> lista= this.estudianteService.buscarTodosHATEOAS();
 	
 	for (EstudianteTO e:lista) {
-		Link myLink = linkTo(methodOn(EstudianteControllerRestFull.class).buscarPorEstudiante(e.getCedula())).withRel("materias");
+		Link myLink = linkTo(methodOn(EstudianteControllerRestFull.class).buscarPorEstudiante(e.getCedula())).withRel("materias"); //withRel(nombre del link)
 		e.add(myLink);
 	}
 	
 		return new ResponseEntity<>(lista,cabecera,HttpStatus.OK);
 	}
 	
-	@GetMapping(path="/{cedula}/materias")
+	@GetMapping(path="/{cedula}/materias",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<MateriaTO>> buscarPorEstudiante(@PathVariable(name="cedula") String cedula){
-		return null;
+		
+		
+		return new ResponseEntity<>(this.materiaService.materiasPorCedulaEstudiante(cedula),null,HttpStatus.OK);
 	}
 }

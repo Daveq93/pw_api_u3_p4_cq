@@ -1,13 +1,15 @@
 package com.example.demo.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -32,4 +34,7 @@ public class Estudiante {
 	private LocalDateTime fechaNacimiento;
 	@Column(name="estu_provincia")
 	private String provincia;
+	
+	@OneToMany(mappedBy = "estudiante",fetch = FetchType.LAZY)
+	private List<Materia> materias;
 }
