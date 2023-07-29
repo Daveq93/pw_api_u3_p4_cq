@@ -3,6 +3,10 @@ package com.example.demo.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,6 +21,8 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="estudiante")
+@JsonIgnoreProperties(value="materias")//para omitir la dependencia ciclica
+@CrossOrigin
 public class Estudiante {
 
 	@Id
