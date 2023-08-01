@@ -25,7 +25,6 @@ public class EstudianteRepoImpl implements IEstudianteRepo {
 		// TODO Auto-generated method stub
 		TypedQuery<Estudiante> myQ = this.em.createQuery("Select e from Estudiante e where e.cedula =: datoCedula",Estudiante.class);
 		Estudiante es =myQ.setParameter("datoCedula", cedula).getSingleResult();
-		System.out.println("Estu: "+es.toString());
 		return es;
 	}
 

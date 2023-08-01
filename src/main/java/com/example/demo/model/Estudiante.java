@@ -43,4 +43,12 @@ public class Estudiante {
 	
 	@OneToMany(mappedBy = "estudiante",fetch = FetchType.LAZY)
 	private List<Materia> materias;
+
+//	@Override
+//	public String toString() {
+//		return "Estudiante [id=" + id + ", cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido
+//				+ ", fechaNacimiento=" + fechaNacimiento + ", provincia=" + provincia + "]";
+//	}
+	
+	
 }

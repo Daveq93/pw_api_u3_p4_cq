@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,6 +32,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/estudiantes") // el nombre debe ser en plural
+@CrossOrigin
 public class EstudianteControllerRestFull {
 
 	@Autowired
@@ -100,7 +102,7 @@ public class EstudianteControllerRestFull {
 //	}
 
 	// -------------------------
-	@GetMapping(path = "/status2/{cedula}", produces = MediaType.APPLICATION_XML_VALUE)
+	@GetMapping(path = "/status2/{cedula}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public Estudiante consultarPorCedula(@PathVariable(name = "cedula") String cedula) {
 		// return
@@ -144,4 +146,5 @@ public class EstudianteControllerRestFull {
 		}
 		return new ResponseEntity<>(lista, null, HttpStatus.OK);
 	}
+	
 }
