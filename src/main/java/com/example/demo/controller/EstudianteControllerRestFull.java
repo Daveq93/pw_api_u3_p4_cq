@@ -50,9 +50,9 @@ public class EstudianteControllerRestFull {
 
 	@GetMapping(path = "/{cedula}")
 	// Response entity es un wrapper
-	public ResponseEntity<Estudiante> consultarPorCedulaStatus(@PathVariable(name = "cedula") String cedula) {
-		return ResponseEntity.status(HttpStatus.OK).body(this.estudianteService.consultarPorCedula(cedula));
-	}
+	//public ResponseEntity<Estudiante> consultarPorCedulaStatus(@PathVariable(name = "cedula") String cedula) {
+	//	return ResponseEntity.status(HttpStatus.OK).body(this.estudianteService.consultarPorCedula(cedula));
+	//}
 
 	@PostMapping(consumes = "application/xml") // Requestbody => digo que Estudiante debe venir en el cuerpo del request
 	public void guardar(@RequestBody Estudiante estudiante) {

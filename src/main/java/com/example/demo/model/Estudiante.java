@@ -22,7 +22,6 @@ import lombok.Data;
 @Entity
 @Table(name="estudiante")
 @JsonIgnoreProperties(value="materias")//para omitir la dependencia ciclica
-@CrossOrigin
 public class Estudiante {
 
 	@Id
